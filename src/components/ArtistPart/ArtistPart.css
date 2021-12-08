@@ -1,0 +1,21 @@
+.leo {
+  width: 850px;
+  height: 420px;
+}
+.van {
+  width: 420px;
+  height: 420px;
+}
+
+.art-second-row {
+  height: 320px;
+  width: 420px;
+}
+@media screen and (max-width: 768px) {
+  .leo,
+  .van,
+  .art-second-row {
+    width: 320px;
+    height: 300px;
+  }
+}
