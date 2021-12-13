@@ -4,7 +4,8 @@ import AboutUs from "../AboutUs/AboutUs";
 import ArtistPart from "../ArtistPart/ArtistPart";
 import MainLayout from "../layouts/MainLayout";
 import NewsLetter from "../NewsLetter/NewsLetter";
-import Search from "../Search/Search";
+import Sidebar from "../Sidebar/Sidebar";
+
 import Slider from "../Slider/Slider";
 
 const MainPage = () => {
@@ -12,7 +13,7 @@ const MainPage = () => {
     <MainLayout>
       <Slider />
       <ArtistPart />
-      <Search />
+      <Sidebar />
 
       <AboutUs />
       <NewsLetter />

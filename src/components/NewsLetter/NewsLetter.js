@@ -4,7 +4,7 @@ const NewsLetter = () => {
   return (
     <>
       <section id="block_newsletter" className="container-fluid">
-        <div id="newsletter_subscribe" className="bg-light row mt-5">
+        <div id="newsletter_subscribe" className="bg-light row mt-5 ">
           <div className="col-lg-6 col-12">
             <p className="fw-medium  large">kART</p>
             <p className="h2 fw-light newsletter-title text-uppercase mb-2">
@@ -36,10 +36,7 @@ const NewsLetter = () => {
 
                   <div className="" id="validation_newsletter_feedback"></div>
                 </div>
-                <button
-                  className="newsletter-button btn btn-dark col-4"
-                  type="submit"
-                >
+                <button className="newsletter-button btn btn-dark col-4">
                   Sign Up
                 </button>
                 {/* <input

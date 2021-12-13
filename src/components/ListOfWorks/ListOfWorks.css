@@ -6,9 +6,10 @@
 }
 .bottom-center {
   position: absolute;
-  bottom: 25px;
+  bottom: 20px;
   right: 18px;
   color: white;
   font-size: large;
   font-weight: bold;
+  display: block;
 }

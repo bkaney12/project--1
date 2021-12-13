@@ -1,54 +1,58 @@
 import React, { useEffect, useState } from "react";
-
-import "./CreateModal.css";
-
 import Modal from "react-bootstrap/Modal";
-import { createWork } from "../../components/api/work";
-import { fetchWorks } from "../../store/actions/artsActions";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
+import { useParams } from "react-router";
+import { fetchOneWork } from "../../store/actions/artsActions";
+import { editWork } from "../api/work";
 
-const CreateModal = (props) => {
+const ModalEdit = (props) => {
+  const { id } = useParams();
+  const work = useSelector((state) => state.artsReducer.work);
   const dispatch = useDispatch();
   const [form, setForm] = useState({
-    author: "",
-    biography: "",
-    title: "",
-    image: "",
-    price: "",
-    description: "",
-    type: "",
-    dimensions: "",
-    techniques: "",
+    author: work.author,
+    biography: work.biography,
+    title: work.title,
+    image: work.image,
+    price: work.price,
+    description: work.description,
+    type: work.type,
+    dimensions: work.dimensions,
+    techniques: work.techniques,
   });
 
+  useEffect(() => {
+    setForm({
+      author: work.author,
+      biography: work.biography,
+      title: work.title,
+      image: work.image,
+      price: work.price,
+      description: work.description,
+      type: work.type,
+      dimensions: work.dimensions,
+      techniques: work.techniques,
+    });
+  }, [work]);
+
   const handleChange = (e) => {
-    console.log(e.target.value);
     const values = {
       ...form,
       [e.target.name]: e.target.value,
     };
     setForm(values);
   };
+  useEffect(() => {
+    dispatch(fetchOneWork(id));
+  }, [id]);
 
-  const onSubmit = async () => {
+  const onEdit = async () => {
     console.log(form, "Submit Form");
-    await createWork(form);
+    await editWork({ ...form, id });
     props.onHide();
-    setForm({
-      author: "",
-      biography: "",
-      title: "",
-      image: "",
-      price: "",
-      description: "",
-      type: "",
-      dimensions: "",
-      techniques: "",
-    });
 
-    dispatch(fetchWorks());
+    dispatch(fetchOneWork(id));
   };
-
   return (
     <>
       <Modal
@@ -59,7 +63,7 @@ const CreateModal = (props) => {
       >
         <Modal.Header closeButton>
           <Modal.Title id="contained-modal-title-vcenter" className="title">
-            ADD A PIECE OF ART
+            EDIT A PIECE OF ART
           </Modal.Title>
         </Modal.Header>
         <Modal.Body>
@@ -174,9 +178,8 @@ const CreateModal = (props) => {
               name="dimensions"
             />
 
-            <button className="submit" onClick={() => onSubmit()}>
-              Create
-              {/* {props.btnText} */}
+            <button className="submit" onClick={() => onEdit()}>
+              Save changes
             </button>
           </div>
         </Modal.Body>
@@ -193,4 +196,4 @@ const CreateModal = (props) => {
   );
 };
 
-export default CreateModal;
+export default ModalEdit;

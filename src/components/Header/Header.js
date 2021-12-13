@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import {
   Form,
   FormControl,
@@ -6,13 +6,11 @@ import {
   Button,
   ButtonGroup,
 } from "react-bootstrap";
-import {
-  FaLinkedin,
-  FaRegHeart,
-  FaShoppingCart,
-  RiAccountCircleLine,
-} from "react-icons/fa";
+import { FaShoppingCart, FaBookmark } from "react-icons/fa";
+import { useSelector } from "react-redux";
 import { Link } from "react-router-dom";
+import { onAuthStateChanged } from "firebase/auth";
+import { auth } from "../../service/firebase-config";
 
 import "./Header.css";
 
@@ -24,8 +22,26 @@ import {
   NavBtn,
   NavBtnLink,
 } from "./HeaderElements";
+import { setUser } from "../../store/reducers/authReducer";
+import { useDispatch } from "react-redux";
+import { logout } from "../../store/actions/authActions";
 
 const Header = () => {
+  const storeData = useSelector((state) => state.favoriteReducer);
+  const [count, setCount] = useState(0);
+  useEffect(() => {
+    const length = Object.keys(storeData).length;
+    length.toString().length > 2 ? setCount("...") : setCount(length);
+  });
+  const dispatch = useDispatch();
+  const user = useSelector((state) => state.authReducer.user);
+  // console.log(user, "user useSelector");
+  useEffect(() => {
+    onAuthStateChanged(auth, (user) => {
+      dispatch(setUser(user));
+    });
+  }, []);
+
   return (
     <>
       <Nav>
@@ -35,6 +51,7 @@ const Header = () => {
         /> */}
         <Link to="/">
           <img
+            className="header-logo"
             src="https://i.pinimg.com/564x/56/68/b5/5668b5d4bd3fa872d77a14c6ded528f1.jpg"
             alt=""
           />
@@ -57,22 +74,50 @@ const Header = () => {
           {/* Second Nav */}
           {/* <NavBtnLink to="/sign-in">Sign In</NavBtnLink> */}
           <Dropdown as={ButtonGroup}>
-            <Button variant="success">Account</Button>
+            {/* <Button variant="success">Account</Button> */}
 
-            <Dropdown.Toggle
+            {user ? (
+              <>
+                <p className="mt-3">{user.email}</p>
+                <Dropdown.Toggle
+                  split
+                  variant="default"
+                  id="dropdown-split-basic"
+                />
+                <Dropdown.Menu>
+                  <Dropdown.Item href="#/action-2" onClick={() => logout()}>
+                    Log out
+                  </Dropdown.Item>
+                </Dropdown.Menu>
+              </>
+            ) : (
+              <Link to="/signin">
+                <Button variant="contained">Sign In</Button>
+              </Link>
+            )}
+
+            {/* <Dropdown.Toggle
               split
-              variant="success"
+              variant="default"
               id="dropdown-split-basic"
             />
 
             <Dropdown.Menu>
-              <Dropdown.Item href="#/action-1">Sign in</Dropdown.Item>
-              <Dropdown.Item href="#/action-2">Log out</Dropdown.Item>
-            </Dropdown.Menu>
+              <Dropdown.Item href="/signin">Sign in</Dropdown.Item>
+            </Dropdown.Menu> */}
           </Dropdown>
-          <NavLink to="/cart" activeStyle>
-            <FaShoppingCart />
+          <NavLink to="/favorites">
+            <span className="fav-counter">{count}</span>
+            <button className="btn">
+              <FaBookmark style={{ height: "100px", color: "violet" }} />
+            </button>
           </NavLink>
+          <Link to="/signUp">
+            <Button variant="contained">Sign Up</Button>
+          </Link>
+          {/* <NavLink to="/cart" activeStyle>
+            <FaShoppingCart />
+          </NavLink> */}
         </NavMenu>
       </Nav>
       <hr className="header-top__seperator" />

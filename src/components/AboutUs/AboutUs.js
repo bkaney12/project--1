@@ -6,7 +6,7 @@ const AboutUs = () => {
     <>
       <Container fluid="md">
         <Row>
-          <h2 className=" fw-light">What is kArt?</h2>
+          <h2 className=" fw-light mt-5">What is kArt?</h2>
           <p>
             With a mission to create an online marketplace that is simple,
             secure, and profitable for artists everywhere, It is the world's

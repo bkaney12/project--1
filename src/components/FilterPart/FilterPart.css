@@ -1,0 +1,13 @@
+.searchBox {
+  position: absolute;
+  top: 37px;
+  width: 200px;
+  background-color: white;
+  list-style: none;
+  margin: 0;
+  padding: 5px;
+  box-shadow: 1px 1px 5px rgba(0, 0, 0, 0.15);
+}
+.searchControl {
+  position: relative;
+}

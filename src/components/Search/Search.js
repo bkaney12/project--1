@@ -1,19 +1,23 @@
-import React, { useState } from "react";
-import { Container, Row } from "react-bootstrap";
-import CreateModal from "../../shared/CreateModal/CreateModal";
-import ArtWorks from "../ArtWorks/ArtWorks";
-import FilterPart from "../FilterPart/FilterPart";
+import React from "react";
+import { useSelector } from "react-redux";
+import { Link } from "react-router-dom";
 
 const Search = () => {
+  const searchResults = useSelector((state) => state.artsReducer.searchResults);
+  console.log(searchResults);
+
   return (
     <>
-      <Container fluid="md">
-        <Row>
-          <FilterPart />
-
-          <ArtWorks />
-        </Row>
-      </Container>
+      <div className="">
+        {searchResults.map((item) => (
+          <Link
+            style={{ textDecoration: "none", color: "inherit" }}
+            to={`/details/${item.id}`}
+          >
+            <p>{item.title}</p>
+          </Link>
+        ))}
+      </div>
     </>
   );
 };

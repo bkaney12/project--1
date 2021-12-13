@@ -1,8 +1,27 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import CreateModal from "../../shared/CreateModal/CreateModal";
+import { FaSearch } from "react-icons/fa";
+import { fetchWorks } from "../../store/actions/artsActions";
+import {
+  fetchByParams,
+  fetchSearchWorks,
+} from "../../store/actions/artsActions";
+import Search from "../Search/Search";
+import "./FilterPart.css";
+import { useDispatch, useSelector } from "react-redux";
+import { setArts } from "../../store/reducers/artsReducers";
+import { useLocation, useNavigate } from "react-router";
+import { FormControl, InputGroup } from "react-bootstrap";
+import { useQueryParams } from "../../hooks/useQueryParams";
 
 const FilterPart = () => {
   const [modalShow, setModalShow] = useState(false);
+  const [searchActive, setSearchActive] = useState(false);
+
+  const dispatch = useDispatch();
+  const location = useLocation();
+  const navigate = useNavigate();
+
   const handleOpenModal = (e) => {
     e.preventDefault();
     setModalShow(true);
@@ -11,100 +30,133 @@ const FilterPart = () => {
   const onCloseModal = () => {
     setModalShow(false);
   };
+
+  const handleSearch = (e) => {
+    dispatch(fetchSearchWorks(e.target.value));
+  };
+
+  const [category, setCategory] = useState("");
+  const handleChangeCategory = (event) => {
+    setCategory(event.target.value);
+  };
+
   return (
     <>
-      <div class="col-12 -col-sm-6 col-md-3 ">
+      <div class="col-12 -col-sm-12 col-md-3 ">
+        <div className="well blosd mt-5">
+          <div className="input-group">
+            <form className="searchControl">
+              <input
+                type="text"
+                className="form-control"
+                onFocus={() => setSearchActive(true)}
+                placeholder="search"
+                onChange={handleSearch}
+              />
+            </form>
+
+            {searchActive && (
+              <div className="searchBox">
+                <Search />
+              </div>
+            )}
+          </div>
+        </div>
         <nav>
           <form
             name="artworks_sidebar"
-            method="post"
             role="form"
-            id="desktop_artwork_search_sidebar"
-            class="form-horizontal"
+            className="form-horizontal"
             novalidate="true"
           >
             <br />
             <br />
 
-            <div class="mb-3">
-              <div class=" mb-3 text-uppercase">
+            <div className="mb-3">
+              <div className=" mb-3 text-uppercase">
                 <span>Category</span>
                 <i
                   style={{ fontSize: "1.5rem", color: "black" }}
-                  class="align-self-center fal fa-angle-up"
+                  className="align-self-center fal fa-angle-up"
                 ></i>
               </div>
-              <div id="desktop_collapse_categories" class="collapse show">
-                <div id="desktop_artworks_sidebar_categorySlug" class="mt-1">
-                  <div class="ps-4 mb-2 abc-radio abc-radio-dark">
-                    <input
-                      data-id="pei"
-                      id="desktop_artworks_sidebar_categorySlug_0"
-                      name="artworks_sidebar[categorySlug]"
-                      value="115"
-                      type="radio"
-                    />
-                    <label class="m-1"></label>
-                    Painting
-                  </div>
-                  <div class="ps-4 mb-2 abc-radio abc-radio-dark">
-                    <input
-                      data-id="scu"
-                      id="desktop_artworks_sidebar_categorySlug_1"
-                      name="artworks_sidebar[categorySlug]"
-                      value="120"
-                      type="radio"
-                    />
-                    <label
-                      class="m-1"
-                      for="desktop_artworks_sidebar_categorySlug_1"
-                    ></label>
-                    Sculpture
-                  </div>
-                  <div class="ps-4 mb-2 abc-radio abc-radio-dark">
-                    <input
-                      data-id="pho"
-                      id="desktop_artworks_sidebar_categorySlug_2"
-                      name="artworks_sidebar[categorySlug]"
-                      value="123"
-                      type="radio"
-                    />
-                    <label
-                      class="m-1"
-                      for="desktop_artworks_sidebar_categorySlug_2"
-                    ></label>
-                    Photography
-                  </div>
-                  <div class="ps-4 mb-2 abc-radio abc-radio-dark">
-                    <input
-                      data-id="dra"
-                      id="desktop_artworks_sidebar_categorySlug_3"
-                      name="artworks_sidebar[categorySlug]"
-                      value="125"
-                      type="radio"
-                    />
-                    <label
-                      class="m-1"
-                      for="desktop_artworks_sidebar_categorySlug_3"
-                    ></label>
-                    Drawing
-                  </div>
+              <div>
+                {" "}
+                <InputGroup
+                // value={category}
+                // onChange={handleChangeCategory}
+                // onClick={(e) => fetchByParams("type", e.target.value)}
+                >
+                  <div className="mt-1">
+                    <div class="ps-4 mb-2 abc-radio abc-radio-dark">
+                      <input
+                        name="artworks_sidebar[categorySlug]"
+                        value="painting"
+                        type="radio"
+                      />
+                      <label className="m-1"></label>
+                      Painting
+                    </div>
+                    <div class="ps-4 mb-2 abc-radio abc-radio-dark">
+                      <input
+                        id="desktop_artworks_sidebar_categorySlug_1"
+                        name="artworks_sidebar[categorySlug]"
+                        value="scupture"
+                        type="radio"
+                        // onChange={handleChangeCategory}
+                        // onClick={(e) => fetchByParams("type", e.target.value)}
+                      />
+                      <label
+                        className="m-1"
+                        for="desktop_artworks_sidebar_categorySlug_1"
+                      ></label>
+                      Sculpture
+                    </div>
+                    <div className="ps-4 mb-2 abc-radio abc-radio-dark">
+                      <input
+                        name="artworks_sidebar[categorySlug]"
+                        value="photography"
+                        type="radio"
+                        // onChange={handleChangeCategory}
+                        // onClick={(e) => fetchByParams("type", e.target.value)}
+                      />
+                      <label
+                        className="m-1"
+                        for="desktop_artworks_sidebar_categorySlug_2"
+                      ></label>
+                      Photography
+                    </div>
+                    <div className="ps-4 mb-2 abc-radio abc-radio-dark">
+                      <input
+                        name="artworks_sidebar[categorySlug]"
+                        value="drawing"
+                        type="radio"
+                        // onChange={handleChangeCategory}
+                        // onClick={(e) => fetchByParams("type", e.target.value)}
+                      />
+                      <label
+                        className="m-1"
+                        for="desktop_artworks_sidebar_categorySlug_3"
+                      ></label>
+                      Drawing
+                    </div>
 
-                  <div class="ps-4 mb-2 abc-radio abc-radio-dark">
-                    <input
-                      data-id="des"
-                      id="desktop_artworks_sidebar_categorySlug_8"
-                      name="artworks_sidebar[categorySlug]"
-                      value="921"
-                      type="radio"
-                    />
-                    <label
-                      class="m-1"
-                      for="desktop_artworks_sidebar_categorySlug_8"
-                    ></label>
-                    Design
+                    <div className="ps-4 mb-2 abc-radio abc-radio-dark">
+                      <input
+                        name="artworks_sidebar[categorySlug]"
+                        value="printmaking"
+                        type="radio"
+                        // onChange={handleChangeCategory}
+                        // onClick={(e) => fetchByParams("type", e.target.value)}
+                      />
+                      <label
+                        className="m-1"
+                        for="desktop_artworks_sidebar_categorySlug_8"
+                      ></label>
+                      Printmaking
+                    </div>
                   </div>
-                </div>
+                </InputGroup>
               </div>
             </div>
             <br />
@@ -205,7 +257,7 @@ const FilterPart = () => {
             </div>
 
             <button
-              className="btn btn-outline-dark  px-4 mt-4 "
+              className="btn btn-outline-dark  px-4 m-5"
               onClick={handleOpenModal}
             >
               Add a piece

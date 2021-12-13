@@ -24,7 +24,7 @@
   font-family: RobotoThin;
   font-size: 100px;
 }
-img {
+.header-logo {
   width: 100px;
   height: 100px;
   padding-bottom: 20px;
@@ -73,4 +73,20 @@ img {
   display: flex;
   justify-content: space-between;
   align-items: center;
+}
+.fav-counter {
+  position: absolute;
+  top: 20px;
+  right: 165px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 20px;
+  height: 20px;
+  font-size: 13px;
+
+  color: white;
+  text-decoration: none;
+  border-radius: 50%;
+  background-color: black;
 }

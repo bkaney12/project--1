@@ -1,0 +1,42 @@
+.image-card {
+  height: 400px;
+  width: 700px;
+  margin-left: 30px;
+  position: relative;
+}
+.fav-details {
+  position: absolute;
+  bottom: 140px;
+  right: 50px;
+  color: white;
+}
+.details {
+  padding: 15px;
+
+  margin-top: 20px;
+}
+.description {
+  margin-left: 70px;
+
+  width: 600px;
+  height: 400px;
+}
+.table {
+  width: 600px;
+}
+.btn-details {
+  background-color: white;
+}
+.icons-details {
+  display: flex;
+  justify-content: space-around;
+  align-items: center;
+  padding: 20px;
+}
+
+/* @media screen and (max-width: 600px) {
+  .image-card {
+    width: 320px;
+    height: 300px;
+  }
+} */
